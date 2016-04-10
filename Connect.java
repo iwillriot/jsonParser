@@ -1,3 +1,7 @@
+/*
+AUTHOR: WILLRIOT
+THIS PROGRAM WAS WRITTEN TO HANDLE JSON_ENCODES FROM PHP
+*/
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -13,22 +17,35 @@ public class Connect{
       
          String inputLine;
          StringBuilder sb = new StringBuilder();
+         
+         //json_encode comes in as one string of text.
          while ((inputLine = in.readLine()) != null){
             toma = inputLine;
-            sb.append(inputLine);
+            String ja = toma;
+            
+            if(toma.equals("0 results[]")){
+               System.out.println("0 results");
+               System.exit(1);
+            }   
          }
-         String[] strArray2 = sb.toString().split(Pattern.quote("split"));
-        
-         for(int i=0;i<strArray2.length;i++){
-            a.add(strArray2[i]);
-         }
-         
          in.close();
       }
-      catch(IOException e){
+      catch(ArrayIndexOutOfBoundsException e){
          System.out.println("Error: " + e);
       }
-     
+      catch(IOException e){
+      
+      }
+      
+      
+      
+      
+      
+      
+      //  this strips the characters and makes
+      //   it easier to parse
+   
+      
       toma = toma.replaceAll("\\[","");
       toma = toma.replaceAll("\\]","");
       toma = toma.replaceAll("\\{","");
@@ -36,13 +53,18 @@ public class Connect{
      
       String[] s = toma.split("}");
       String build = "";
+      
       for(String x: s){
          build = build + x;  
+      
       }
       String[] g = build.split(",");
       
       ArrayList<Book> books = new ArrayList<>();
-     int count = 0;
+      
+      
+      int count = 0;
+      
       for(String i: g){
          String[] line = i.split(":");
         
@@ -59,7 +81,7 @@ public class Connect{
          
       }
       for(Book x: books){
-         System.out.println(x.getId() + " " + x.getTxt());
+         System.out.println(x.toString());
       }
    }
    
@@ -100,14 +122,4 @@ class Book{
    public String toString(){
       return id + ":" + txt;
    }
-   public boolean contains(ArrayList<Book> list, String id){
-      boolean flag = false;
-      for(Book x: list){
-         if(x.getId().equals(id)){
-            flag = true;
-         }
-      }
-      return flag;
-   }
- 
 }
